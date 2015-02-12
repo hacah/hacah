@@ -8,7 +8,7 @@ Run the script to generate a LaTeX document with your cards.
 ```
 ruby hacah.rb sample.yaml
 ```
-This will produce `sample.tex`. As special font settings are required use XeLaTeX to build this file.
+This will produce `sample.tex`. As special [fonts](#fonts) are required use XeLaTeX to build this file.
 ```
 xelatex sample.tex
 ```
