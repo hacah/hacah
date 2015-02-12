@@ -14,6 +14,8 @@ xelatex sample.tex
 ```
 Use the parameter `--no-black` or `--no-white` to restrict processing to white or black files.
 
+To get correct hyphenation you can specify the language for the [babel](http://www.ctan.org/pkg/babel) package using the `--language` parameter.
+
 Run `ruby hacah.rb --help` for more information.
 
 ### Processing multiple files

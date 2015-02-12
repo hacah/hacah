@@ -132,7 +132,7 @@ def read_cards io
   }
 end
 
-def write_cards(cards, io, output_black, output_white)
+def write_cards(cards, io, output_black, output_white, language)
   if output_black
     black_tikz = cards[:black].collect { |card| card.to_tikz }
   end
@@ -141,6 +141,9 @@ def write_cards(cards, io, output_black, output_white)
   end
 
   io.puts CommonPreamble
+  unless language.nil?
+    io.puts "\\usepackage[#{language}]{babel}"
+  end
   io.puts '\begin{document}'
   if output_black
     io.puts BlackSettings
@@ -186,6 +189,9 @@ Usage: #{executable_name} [card_data ...]"
   opts.on('-o file', '--output', 'Output filename') do |file|
     options[:output] = file
   end
+  opts.on('-l lang', '--language', 'Set babel language for hyphenation') do |lang|
+    options[:language] = lang
+  end
 end
 
 option_parser.parse!
@@ -206,10 +212,10 @@ else
   if options.has_key? 'output'
     # merge cards
     cards = cards_array.map(&:to_a).flatten(1).reduce({}) {|h,(k,v)| (h[k] ||= []) << v; h}
-    write_cards cards, open(options[:output]), options[:black], options[:white]
+    write_cards cards, open(options[:output]), options[:black], options[:white], options[:language]
   else
     cards_array.each.with_index do |cards, idx|
-      write_cards cards, open(File.basename(ARGV[idx], '.*') + '.tex', 'w'), options[:black], options[:white]
+      write_cards cards, open(File.basename(ARGV[idx], '.*') + '.tex', 'w'), options[:black], options[:white], options[:language]
     end
   end
 end
