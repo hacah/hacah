@@ -81,8 +81,8 @@ end
 CommonPreamble = <<EOF
 \\documentclass[tikz]{standalone}
 \\usepackage{fontspec}
-\\newfontfamily\\HelveticaBold{Helvetica Neue LT Std}[BoldFont={* 75 Bold}]
-\\newfontfamily\\HelveticaHeavy{Helvetica Neue LT Std}[BoldFont={* 85 Heavy}]
+\\newfontfamily\\HelveticaBold[BoldFont={* 75 Bold}]{Helvetica Neue LT Std}
+\\newfontfamily\\HelveticaHeavy[BoldFont={* 85 Heavy}]{Helvetica Neue LT Std}
 \\definecolor{cah_grey}{RGB}{35,31,32}
 \\tikzset{blank/.style={baseline=0.137em, line width=0.056em}}
 EOF
