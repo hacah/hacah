@@ -49,6 +49,10 @@ Use an underscore to add a placeholder to the card text. Append the length of th
 To get a literal underscore do not follow it by a number. ;)
 *If you really need a literal underscore followed by a number (why???) use two underscores instead of one.*
 
+### Caveats
+* If your text contains a colon (:) you have to use the multi line format, even if it is just a single line.
+* If your text starts with a quotation mark (' or ") you have to use the multi line format.
+
 ## Fonts
 By default Helvetica Neue is used to match the Cards Against Humanity look as closely as possible. The font can be bought [here](http://www.linotype.com/1266/neuehelvetica-family.html). The Bold (75) and Heavy (85) typefaces are used.
 
