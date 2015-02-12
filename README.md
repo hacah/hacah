@@ -53,3 +53,9 @@ To get a literal underscore do not follow it by a number. ;)
 By default Helvetica Neue is used to match the Cards Against Humanity look as closely as possible. The font can be bought [here](http://www.linotype.com/1266/neuehelvetica-family.html). The Bold (75) and Heavy (85) typefaces are used.
 
 Currently no other font is supported. If you do not own the font you have to modify the script yourself.
+
+## Printing
+To prepare your cards for printing you can use [PDFjam](http://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/software/pdfjam/).
+```
+pdfjam --paper a4paper --nup 4x5 --noautoscale true --frame true cards.pdf
+```
