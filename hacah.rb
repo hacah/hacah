@@ -34,7 +34,7 @@ class Card
     13 => 18,
   }
 
-  BlankPattern = /_(\d*\.?\d+)/
+  BlankPattern = /(?<!_)_(\d*\.?\d+)/
   BlankTemplate = '\tikz[blank] { \draw (0, 0) -- (\1ex, 0); }'
 
   def to_tikz
@@ -57,7 +57,7 @@ class Card
     # card text
     size = @font || 13
     # handle blanks
-    text = @text.gsub(BlankPattern, BlankTemplate)
+    text = @text.gsub(BlankPattern, BlankTemplate).gsub('__', '_')
     text = sanitize_for_latex text
     tikz += "\\node[card text, font=\\HelveticaHeavy\\fontsize{#{size}}{#{FontSizes[size]}}\\bfseries] at (0.436, -0.436) {#{text}};"
 

@@ -42,12 +42,12 @@ To use custom line breaks add multi line text.
           text
 ```
 
-Use an underscore to add a placeholder to the card text. Append the length of the placeholde in *ex* to the underscore.
+Use an underscore to add a placeholder to the card text. Append the length of the placeholder in *ex* to the underscore.
 ```yaml
   - text: _4.2 is better than _8.`
 ```
 To get a literal underscore do not follow it by a number. ;)
-
+*If you really need a literal underscore followed by a number (why???) use two underscores instead of one.*
 
 ## Fonts
 By default Helvetica Neue is used to match the Cards Against Humanity look as closely as possible. The font can be bought [here](http://www.linotype.com/1266/neuehelvetica-family.html). The Bold (75) and Heavy (85) typefaces are used.
