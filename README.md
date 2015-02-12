@@ -12,6 +12,7 @@ This will produce `sample.tex`. As special font settings are required use XeLaTe
 ```
 xelatex sample.tex
 ```
+Use the parameter `--no-black` or `--no-white` to restrict processing to white or black files.
 
 Run `ruby hacah.rb --help` for more information.
 
