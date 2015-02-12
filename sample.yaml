@@ -1,0 +1,33 @@
+---
+black-cards:
+  - text: Foo bar.
+
+  - text: |
+      Multi
+      Line
+      Text
+
+  - text: |
+      Bar length in ex.
+      3ex: _3
+      4.5ex: _4.5
+
+  - text: With more parameters.
+    draw: 2
+    pick: 4
+
+  - text: This card has small text.
+    font: 10
+
+  - text: |
+      Valid font sizes: 10, 11, 12, 13.
+      Default: 13.
+
+  - text: For my next trick, I will pull _7 out of _10.
+    pick: 2
+
+white-cards:
+  - text: A time travel paradox.
+
+  - text: A really cool hat.
+...
