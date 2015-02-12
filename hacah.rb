@@ -8,7 +8,7 @@ class Card
   attr_accessor :text, :font, :draw, :pick
 
   def initialize(data)
-    @text = data['text']
+    @text = data['text'].chomp
     @font = data['font']
     raise "Font size '#{@font}' not supported." unless @font.nil? or (10..13).to_a.include? @font
     @draw = data['draw']
@@ -56,7 +56,10 @@ class Card
     end
     # card text
     size = @font || 13
-    tikz += "\\node[card text, font=\\HelveticaHeavy\\fontsize{#{size}}{#{FontSizes[size]}}\\bfseries] at (0.436, -0.436) {#{@text.gsub(BlankPattern, BlankTemplate).gsub("\n", "\\\\\\\\")}};"
+    # handle blanks
+    text = @text.gsub(BlankPattern, BlankTemplate)
+    text = sanitize_for_latex text
+    tikz += "\\node[card text, font=\\HelveticaHeavy\\fontsize{#{size}}{#{FontSizes[size]}}\\bfseries] at (0.436, -0.436) {#{text}};"
 
     if has_pick?
       tikz += "\\node[instruction text] at (4.025, -4.525) {PICK};\n"
@@ -67,6 +70,11 @@ class Card
       tikz += "\\node[instruction number] at (4.387, -3.847) {#{@draw}};\n"
     end
     tikz
+  end
+
+  private
+  def sanitize_for_latex(text)
+    text.gsub("\n", "\\\\\\\\").gsub('_', '\_').gsub('%', '\%')
   end
 end
 
