@@ -37,7 +37,10 @@ class Card
   BlankPattern = /(?<!_)_(\d*\.?\d+)/
   BlankTemplate = '\tikz[blank] { \draw (0, 0) -- (\1ex, 0); }'
 
-  def to_tikz
+  def to_tikz(draft)
+    # font size
+    size = @font || 13
+
     tikz = ''
     # tikz += '\draw[help lines] (0, 0) grid (5, -5);'
     # background
@@ -45,6 +48,14 @@ class Card
     tikz += "\\fill[background] (0, 0) rectangle (5, -5);\n"
     # text area
     # tikz += '\path[fill=white, draw=cah_grey, line width=0.33mm, rounded corners=0.37cm] (0.32, -0.32) rectangle (4.68, -3.32);'
+    # draft mode
+    if draft
+      tikz += "{\n"
+      tikz += "\\HelveticaHeavy\\fontsize{#{size}}{#{FontSizes[size]}}\\bfseries\n"
+      tikz += "\\draw[help lines, shift={(0.435, -0.436)}, step=1ex, xstep=1ex, ystep=3.23cm] (0, 0) grid +(4.128, -3.23);\n"
+      tikz += "\\draw[red] (0.436, -0.436) rectangle +(4.128, -3.23);\n"
+      tikz += "}\n"
+    end
     # CAH logo
     tikz += "\\path[logo card black, rotate around={17:(0.54, -4.59)}] (0.54, -4.59) rectangle +(0.352, 0.352);\n"
     tikz += "\\path[logo card white] (0.61, -4.55) rectangle +(0.352, 0.352);\n"
@@ -55,7 +66,6 @@ class Card
       tikz += "\\node[logo text] at (1.197, -4.525) {Cards Against Humanity};\n"
     end
     # card text
-    size = @font || 13
     # handle blanks
     text = @text.gsub(BlankPattern, BlankTemplate).gsub('__', '_')
     text = sanitize_for_latex text
@@ -132,12 +142,12 @@ def read_cards io
   }
 end
 
-def write_cards(cards, io, output_black, output_white, language)
+def write_cards(cards, io, output_black, output_white, language, draft)
   if output_black
-    black_tikz = cards[:black].collect { |card| card.to_tikz }
+    black_tikz = cards[:black].collect { |card| card.to_tikz draft }
   end
   if output_white
-    white_tikz = cards[:white].collect { |card| card.to_tikz }
+    white_tikz = cards[:white].collect { |card| card.to_tikz draft }
   end
 
   io.puts CommonPreamble
@@ -173,6 +183,7 @@ end
 options = {
   :black => true,
   :white => true,
+  :draft => false,
 }
 option_parser = OptionParser.new do |opts|
   executable_name = File.basename $PROGRAM_NAME
@@ -191,6 +202,9 @@ Usage: #{executable_name} [card_data ...]"
   end
   opts.on('-l lang', '--language', 'Set babel language for hyphenation') do |lang|
     options[:language] = lang
+  end
+  opts.on('-d', '--draft', 'Add layout helper lines') do |draft|
+    options[:draft] = draft
   end
 end
 
@@ -212,10 +226,10 @@ else
   if options.has_key? 'output'
     # merge cards
     cards = cards_array.map(&:to_a).flatten(1).reduce({}) {|h,(k,v)| (h[k] ||= []) << v; h}
-    write_cards cards, open(options[:output]), options[:black], options[:white], options[:language]
+    write_cards cards, open(options[:output]), options[:black], options[:white], options[:language], options[:draft]
   else
     cards_array.each.with_index do |cards, idx|
-      write_cards cards, open(File.basename(ARGV[idx], '.*') + '.tex', 'w'), options[:black], options[:white], options[:language]
+      write_cards cards, open(File.basename(ARGV[idx], '.*') + '.tex', 'w'), options[:black], options[:white], options[:language], options[:draft]
     end
   end
 end
