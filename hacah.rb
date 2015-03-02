@@ -196,7 +196,7 @@ end
 
 option_parser.parse!
 if ARGV.empty?
-  option_parser.usage
+  puts option_parser.banner
   exit 1
   # # Use as pipe
   # cards = read_cards STDIN
