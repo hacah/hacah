@@ -84,7 +84,7 @@ class Card
 
   private
   def sanitize_for_latex(text)
-    text.gsub("\n", "\\\\\\\\").gsub('_', '\_').gsub('%', '\%')
+    text.gsub("\n", "\\\\\\\\").gsub('_', '\_').gsub('%', '\%').gsub('&', '&' => '\&').gsub('$', '\$')
   end
 end
 
