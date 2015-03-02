@@ -153,6 +153,15 @@ def write_cards(cards, io, output_black, output_white, language, draft)
   io.puts CommonPreamble
   unless language.nil?
     io.puts "\\usepackage[#{language}]{babel}"
+    # handle language specific problems of tikz and babel
+    case language
+    when 'ngerman', 'german'
+      io.puts "\\tikzset{"
+      io.puts "  every picture/.prefix style={"
+      io.puts "    execute at begin picture=\\shorthandoff{\"}"
+      io.puts "  }"
+      io.puts "}"
+    end
   end
   io.puts '\begin{document}'
   if output_black
