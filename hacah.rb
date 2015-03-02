@@ -69,7 +69,7 @@ class Card
     # handle blanks
     text = @text.gsub(BlankPattern, BlankTemplate).gsub('__', '_')
     text = sanitize_for_latex text
-    tikz += "\\node[card text, font=\\HelveticaHeavy\\fontsize{#{size}}{#{FontSizes[size]}}\\bfseries] at (0.436, -0.436) {#{text}};"
+    tikz += "\\node[card text, font=\\HelveticaHeavy\\fontsize{#{size}}{#{FontSizes[size]}}\\bfseries] at (0.436, -0.436) {\\rule{0pt}{0.72em}#{text}};"
 
     if has_pick?
       tikz += "\\node[instruction text] at (4.025, -4.525) {PICK};\n"
