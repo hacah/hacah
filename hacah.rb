@@ -8,7 +8,7 @@ class Card
   attr_accessor :text, :font, :draw, :pick
 
   def initialize(data)
-    @text = data['text'].chomp
+    @text = data['text'].to_s.chomp
     @font = data['font']
     raise "Font size '#{@font}' not supported." unless @font.nil? or (10..13).to_a.include? @font
     @draw = data['draw']
