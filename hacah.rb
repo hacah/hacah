@@ -5,14 +5,15 @@ require 'yaml'
 require 'optparse'
 
 class Card
-  attr_accessor :text, :font, :draw, :pick
+  attr_accessor :text, :font, :draw, :pick, :edition
 
-  def initialize(data)
+  def initialize(data, edition)
     @text = data['text'].to_s.chomp
     @font = data['font']
     raise "Font size '#{@font}' not supported." unless @font.nil? or (10..13).to_a.include? @font
     @draw = data['draw']
     @pick = data['pick']
+    @edition = edition
   end
 
   def has_draw?
@@ -25,6 +26,10 @@ class Card
 
   def has_font?
     not @font.nil?
+  end
+
+  def has_edition?
+    not @edition.nil?
   end
 
   FontSizes = {
@@ -60,6 +65,9 @@ class Card
     tikz += "\\path[logo card black, rotate around={17:(0.54, -4.59)}] (0.54, -4.59) rectangle +(0.352, 0.352);\n"
     tikz += "\\path[logo card white] (0.61, -4.55) rectangle +(0.352, 0.352);\n"
     tikz += "\\path[logo card white, rotate around={-17:(0.69, -4.537)}] (0.69, -4.537) rectangle +(0.352, 0.352);\n"
+    if has_edition?
+      tikz += "\\node[edition text] at (0.69, -4.537) {#{sanitize_for_latex @edition}};\n"
+    end
     if has_pick?
       tikz += "\\node[logo text] at (1.197, -4.525) {CAH};\n"
     else
@@ -95,6 +103,7 @@ CommonPreamble = <<EOF
 \\newfontfamily\\HelveticaHeavy[BoldFont={* 85 Heavy}]{Helvetica Neue LT Std}
 \\definecolor{cah_grey}{RGB}{35,31,32}
 \\tikzset{blank/.style={baseline=0.137em, line width=0.056em}}
+\\tikzset{edition text/.style={inner sep=0, text=cah_grey, minimum size=0.352cm, text width=0.352cm, align=center, font=\\HelveticaBold\\fontsize{5}{5}\\bfseries, rotate=-17, anchor=south west}}
 EOF
 
 BlackSettings = <<EOF
@@ -120,10 +129,21 @@ def read_cards io
 
   return nil unless card_data.is_a? Hash
 
+  if card_data.has_key? 'name'
+    STDERR.puts "Reading cards from card_data '#{card_data['name'].chomp}'."
+  else
+    STDERR.puts "Reading cards from unnamed collection."
+  end
+
+  edition = nil
+  if card_data.has_key? 'edition'
+    edition = card_data['edition'].chomp
+  end
+
   black_cards = []
   if card_data.has_key? 'black-cards'
     card_data['black-cards'].each do |data|
-      black_cards <<= Card.new data
+      black_cards <<= Card.new data, edition
     end
   end
   # STDERR.puts "Read #{black_cards.length} black cards."
@@ -131,7 +151,7 @@ def read_cards io
   white_cards = []
   if card_data.has_key? 'white-cards'
     card_data['white-cards'].each do |data|
-      white_cards <<= Card.new data
+      white_cards <<= Card.new data, edition
     end
   end
   # STDERR.puts "Read #{white_cards.length} white cards."

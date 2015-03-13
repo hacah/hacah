@@ -19,7 +19,7 @@ To get correct hyphenation you can specify the language for the [babel](http://w
 Run `ruby hacah.rb --help` for more information.
 
 ### Processing multiple files
-To organise your collection of cards you can store them in different files. Each file can contain black and/or white cards. To process multiple files at once pass all of them to hacah.
+To organise your collections of cards you can store them in different files. Each file can contain one collection of black and/or white cards. Each collection can have an optional name and an optional *edition* that is printed on the card. To process multiple files at once pass all of them to hacah.
 ```
 ruby hacah.rb file1.yaml file2.yaml
 ```
@@ -50,6 +50,8 @@ Use an underscore to add a placeholder to the card text. Append the length of th
 ```
 To get a literal underscore do not follow it by a number. ;)
 *If you really need a literal underscore followed by a number (why???) use two underscores instead of one.*
+
+If your collection has an edition entry it will be printed inside the small cards of the logo. You can use this to sort out different collections if you want to. Please keep in mind that there is only space for a maximum of approximately two by two letters, so keep your edition codes short.
 
 ### Caveats
 * If your text contains a colon (:) you have to use the multi line format, even if it is just a single line.

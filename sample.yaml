@@ -1,4 +1,7 @@
 ---
+name: Sample cards
+edition: S
+
 black-cards:
   - text: Foo bar.
 
